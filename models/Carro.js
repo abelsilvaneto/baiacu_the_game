@@ -83,6 +83,25 @@ class Tubarao extends Obj {
     }
 }
 
+class Megatubarao extends Tubarao {
+    constructor(x, y, w, h, src) {
+        super(x, y, w, h, src)
+
+        this.vel = 7
+        this.angulo = 0
+    }
+    mov_megatubarao() {
+        this.x -= this.vel
+
+        this.angulo += 0.1
+        this.y += Math.sin(this.angulo) * 3
+        
+        if (this.x <= -100) {
+            this.recomeca()
+        }
+    }
+}
+
 // ─────────────────────────────
 
 class Text {

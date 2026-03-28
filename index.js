@@ -1,6 +1,19 @@
 let des = document.getElementById('des').getContext('2d')
 
-// 🌆 FUNDO
+let musicaJogo = new Audio('./img/game.mp3')
+let musicaVitoria = new Audio('./img/vitoria.mp3')
+let musicaGameOver = new Audio('./img/perdeu.mp3')
+let musicaMenu = new Audio('./img/menu.mp3')
+
+musicaJogo.loop = true
+musicaMenu.loop = true
+
+musicaMenu.volume = 0.5
+musicaJogo.volume = 0.5
+musicaVitoria.volume = 0.7
+musicaGameOver.volume = 0.7
+
+//  FUNDO
 let bg = new Image()
 bg.src = './img/fundo.png'
 
@@ -10,15 +23,25 @@ bg2.src = './img/fundo2.png'
 let bg3 = new Image()
 bg3.src = './img/fundo3.png'
 let bgX = 0
+let velocidadeFundo = 3
 
-// 🖼️ CAPA
+//  CAPA
 let capa = new Image()
 capa.src = './img/capa.png'
+
+let capaVitoria = new Image()
+capaVitoria.src = './img/vitoria.png'
 
 let mouseX = 0
 let mouseY = 0
 
-// 🚗 INIMIGOS
+//  INIMIGOS
+let megatubarao = [
+    new Megatubarao(1400, 300, 80, 80, './img/mega_tubarao1.png'),
+    new Megatubarao(1400, 300, 80, 80, './img/mega_tubarao1.png'),
+    new Megatubarao(1400, 300, 80, 80, './img/mega_tubarao1.png')
+
+]
 let tubarao = new Tubarao(1300, 325, 80, 50, './img/PC_Computer_1bg.png')
 let tubarao2 = new Tubarao(1500, 125, 80, 50, './img/PC_Computer_1bg.png')
 let tubarao3 = new Tubarao(1700, 400, 80, 50, './img/PC_Computer_1bg.png')
@@ -28,7 +51,7 @@ let vidaItem = new Vida(1400, 200, 50, 50, './img/coracao.png')
 let tempoVida = 0
 
 
-// 🐡 JOGADORES (BAIACU)
+//  JOGADORES (BAIACU)
 let baiacu1 = new Baiacu(100, 250, 80, 50, './img/baiacu_0_bg.png')
 let baiacu2 = new Baiacu(100, 420, 80, 50, './img/baiacu_1_bg.png')
 
@@ -40,7 +63,7 @@ let fase_txt = new Text()
 
 let fase = 1
 let jogar = true
-let estado = 'menu' // 👈 AQUI
+let estado = 'menu' 
 let botoes = [
     { texto: 'JOGAR', x: 450, y: 300, w: 300, h: 60 },
     { texto: 'SOBRE MIN', x: 450, y: 380, w: 300, h: 60 },
@@ -67,6 +90,34 @@ document.addEventListener('mousemove', (e) => {
     mouseY = e.clientY - rect.top
 })
 
+let audioLiberado = false
+
+document.addEventListener('click', () => {
+    if (!audioLiberado) {
+        musicaMenu.play().then(() => {
+            musicaMenu.pause()
+            musicaMenu.currentTime = 0
+            audioLiberado = true
+        }).catch(() => {})
+    }
+}, { once: true })
+
+let musicaAtual = null
+
+function tocarMusica(musica) {
+    if (!audioLiberado) return
+
+    if (musicaAtual === musica) return
+
+    if (musicaAtual) {
+        musicaAtual.pause()
+        musicaAtual.currentTime = 0
+    }
+
+    musicaAtual = musica
+    musicaAtual.play().catch(() => {})
+}
+
 document.addEventListener('click', (e) => {
     if (estado !== 'menu') return
 
@@ -85,7 +136,7 @@ document.addEventListener('click', (e) => {
         }
     })
 })
-// 🎮 CONTROLES
+//  CONTROLES
 let keys = {}
 
 document.addEventListener('keydown', (e) => {
@@ -102,9 +153,9 @@ document.addEventListener('keydown', (e) => {
     }
 
     // reiniciar
-    if (estado === 'gameover' && e.key === 'r') {
-        resetarJogo()
-    }
+    if ((estado === 'gameover' || estado === 'vitoria') && e.key === 'r') {
+    resetarJogo()
+}
 
     // parry
     if (e.key === 'Shift') baiacu1.ativarParry()
@@ -115,9 +166,12 @@ document.addEventListener('keyup', (e) => {
     keys[e.key] = false
 })
 
-// 💥 COLISÃO
-function colisao() {
-    let inimigos = [tubarao, tubarao2, tubarao3]
+//  COLISÃO
+    function colisao() {
+
+    let inimigos = fase < 3 
+        ? [tubarao, tubarao2, tubarao3]
+        : []
 
     // J1 pega vida
 if (baiacu1.colid(vidaItem)) {
@@ -129,6 +183,22 @@ if (baiacu1.colid(vidaItem)) {
 if (baiacu2.colid(vidaItem)) {
     if (baiacu2.vida < 5) baiacu2.vida++
     vidaItem.x = -200
+}
+
+if (fase === 3) {
+    megatubarao.forEach(m => {
+
+        if (baiacu1.vivo && baiacu1.colid(m)) {
+            m.recomeca()
+            baiacu1.tomarDano()
+        }
+
+        if (baiacu2.vivo && baiacu2.colid(m)) {
+            m.recomeca()
+            baiacu2.tomarDano()
+        }
+
+    })
 }
 
     inimigos.forEach(inimigo => {
@@ -150,51 +220,45 @@ function clicarBotao(texto) {
     else if (texto === 'CONTROLES') estado = 'controles'
 }
 
-// ⭐ PONTUAÇÃO
-function pontuacao() {
-    let inimigos = [tubarao, tubarao2, tubarao3]
 
-    inimigos.forEach(inimigo => {
-        if (inimigo.x <= -100) {
-            if (baiacu1.vivo) baiacu1.pontos += 5
-            if (baiacu2.vivo) baiacu2.pontos += 5
-            inimigo.recomeca()
-        }
-    })
-}
 
-// 🎯 FASE
+
+//  FASE
 function ver_fase() {
     let melhor = Math.max(baiacu1.pontos, baiacu2.pontos)
 
-    if (melhor > 50 && fase === 1) {
+    if (melhor > 300 && fase === 1) {
         fase = 2
         tubarao.vel = tubarao2.vel = tubarao3.vel = 10
     }
-    else if (melhor > 100 && fase === 2) {
+    else if (melhor > 600 && fase === 2) {
         fase = 3
         tubarao.vel = tubarao2.vel = tubarao3.vel = 14
     }
-    // 🔥 NOVO: aceleração infinita na fase 3
+    //  NOVO: aceleração infinita na fase 3
     if (fase === 3) {
-        tubarao.vel += 0.01
-        tubarao2.vel += 0.01
-        tubarao3.vel += 0.01
+        megatubarao.forEach(m => m.vel += 0.002)
     }
 }
 
-// 💀 GAME OVER
+//  GAME OVER
 function game_over() {
     if (baiacu1.vida <= 0) baiacu1.vivo = false
     if (baiacu2.vida <= 0) baiacu2.vivo = false
 
     if (!baiacu1.vivo && !baiacu2.vivo) {
         estado = 'gameover' // 👈 MUDA AQUI
-        // Tela de Game Over
-
+            // Tela de Game Over
     }
+
+
 }
 
+    function vitoria() {
+    if (baiacu1.pontos >= 1200 || baiacu2.pontos >= 1200) {
+        estado = 'vitoria'
+            }
+        }
 function resetarJogo() {
     // jogadores
     baiacu1.x = 100
@@ -210,6 +274,11 @@ function resetarJogo() {
     baiacu2.vivo = true
 
     // inimigos
+    megatubarao.forEach(m => {
+        m.x = 1400
+        m.y = Math.random() * (650 - 62) + 62
+        m.vel = 7
+    })
     tubarao.recomeca()
     tubarao2.recomeca()
     tubarao3.recomeca()
@@ -225,17 +294,19 @@ function resetarJogo() {
     estado = 'jogo'
 }
 
-// 🧾 HUD
+//  HUD
 function desenha_hud() {
-    t1.des_text(`J1: ${baiacu1.pontos} pts`, 20, 30, 'cyan', '20px monospace', des)
-    t1.des_text(`Vida: ${'❤️'.repeat(baiacu1.vida)}`, 20, 58, 'cyan', '16px monospace', des)
-    t1.des_text(`Parry: ${Math.ceil(baiacu1.parryCooldown / 60)}s`, 20, 80, 'cyan', '16px monospace', des)
+    t1.des_text(`J1: ${Math.floor(baiacu1.pontos)} pts`, 100, 30, 'cyan', '20px monospace', des)
 
-    t2.des_text(`J2: ${baiacu2.pontos} pts`, 900, 30, 'lime', '20px monospace', des)
-    t2.des_text(`Vida: ${'❤️'.repeat(baiacu2.vida)}`, 900, 58, 'lime', '16px monospace', des)
-    t2.des_text(`Parry: ${Math.ceil(baiacu2.parryCooldown / 60)}s`, 900, 80, 'lime', '16px monospace', des)
+t1.des_text(`Vida: ${'❤️'.repeat(Math.max(0, baiacu1.vida || 0))}`, 100, 58, 'cyan', '16px monospace', des)
+t2.des_text(`Vida: ${'❤️'.repeat(Math.max(0, baiacu2.vida || 0))}`, 1100, 58, 'lime', '16px monospace', des)
 
-    fase_txt.des_text(`Fase: ${fase}`, 550, 30, 'white', '20px monospace', des)
+t1.des_text(`Parry: ${Math.ceil((baiacu1.parryCooldown || 0) / 60)}s`, 100, 80, 'cyan', '16px monospace', des)
+t2.des_text(`Parry: ${Math.ceil((baiacu2.parryCooldown || 0) / 60)}s`, 1100, 80, 'lime', '16px monospace', des)
+
+    t2.des_text(`J2: ${Math.floor(baiacu2.pontos)} pts`, 1100, 30, 'lime', '20px monospace', des)
+
+    fase_txt.des_text(`Fase: ${fase}`, 620, 30, 'white', '20px monospace', des)
 
 }
 
@@ -252,7 +323,7 @@ function desenha_gameover() {
 
     des.fillStyle = 'white'
     des.font = '30px monospace'
-    des.fillText(`J1: ${baiacu1.pontos} pts   J2: ${baiacu2.pontos} pts`, 600, 380)
+    des.fillText(`J1: ${Math.floor(baiacu1.pontos)} pts   J2: ${Math.floor(baiacu2.pontos)} pts`, 600, 380)
 
     des.font = '25px monospace'
     des.fillText('Pressione R para reiniciar', 600, 450)
@@ -273,7 +344,7 @@ function desenha_menu() {
             mouseY >= btn.y &&
             mouseY <= btn.y + btn.h
 
-        // 🎨 muda cor se estiver em cima
+        //  muda cor se estiver em cima
         des.fillStyle = hover ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.6)'
         des.fillRect(btn.x, btn.y, btn.w, btn.h)
 
@@ -283,7 +354,7 @@ function desenha_menu() {
     })
 }
 
-// 🎨 DESENHAR
+//  DESENHAR
 function desenha() {
 
     // FUNDO
@@ -299,9 +370,18 @@ function desenha() {
 
 
     // INIMIGOS
+if (fase < 3) {
     des.drawImage(tubarao.img, tubarao.x, tubarao.y, tubarao.w, tubarao.h)
     des.drawImage(tubarao2.img, tubarao2.x, tubarao2.y, tubarao2.w, tubarao2.h)
     des.drawImage(tubarao3.img, tubarao3.x, tubarao3.y, tubarao3.w, tubarao3.h)
+}
+
+
+if (fase === 3) {
+    megatubarao.forEach(m => {
+        des.drawImage(m.img, m.x, m.y, m.w, m.h)
+    })
+}
 
     vidaItem.desenhar(des)
 
@@ -345,6 +425,30 @@ function desenha() {
     desenha_hud()
 }
 
+function desenha_vitoria() {
+    // fundo escuro
+    des.drawImage(capaVitoria, 0, 0, 1200, 700)
+
+    // texto por cima
+    des.fillStyle = 'yellow'
+    des.font = 'bold 80px monospace'
+    des.textAlign = 'center'
+    des.fillText('VITÓRIA!', 600, 250)
+
+    let vencedor = baiacu1.pontos > baiacu2.pontos ? 'JOGADOR 1' : 'JOGADOR 2'
+
+    des.fillStyle = 'white'
+    des.font = '30px monospace'
+    des.fillText(`${vencedor} venceu!`, 600, 350)
+
+    des.fillText(`J1: ${Math.floor(baiacu1.pontos)} pts`, 600, 420)
+    des.fillText(`J2: ${Math.floor(baiacu2.pontos)} pts`, 600, 460)
+
+    des.font = '25px monospace'
+    des.fillText('Pressione R para reiniciar', 600, 550)
+}
+
+
 function desenha_criador() {
     des.fillStyle = 'black'
     des.fillRect(0, 0, 1200, 700)
@@ -353,7 +457,8 @@ function desenha_criador() {
     des.textAlign = 'center'
     des.fillText('Criado por: Abel Silva Neto na escola sesi senai ', 600, 300)
     des.fillText('Email: abel_silva-neto@estudante.sesisenai.org.br ', 600, 350)
-    des.fillText('telefone: (47) 99614-7194 ', 600, 400)
+    des.fillText('Product Owner: carlos Roberto da silva filho', 600, 400)
+    des.fillText('Telefone: (47) 99614-7194 ', 600, 450)
     des.fillText('ESC para voltar', 600, 500)
 }
 
@@ -371,27 +476,44 @@ function desenha_controles() {
 
 function moverJogadores() {
 
-    // JOGADOR 1
+if (baiacu1.vivo) {
     if (keys['w']) baiacu1.y -= 5
     if (keys['s']) baiacu1.y += 5
+}
 
-    // JOGADOR 2
+if (baiacu2.vivo) {
     if (keys['ArrowUp']) baiacu2.y -= 5
     if (keys['ArrowDown']) baiacu2.y += 5
+}
 
     // LIMITES
     baiacu1.y = Math.max(62, Math.min(650, baiacu1.y))
     baiacu2.y = Math.max(62, Math.min(650, baiacu2.y))
 }
 
-// 🔄 ATUALIZA
+//  ATUALIZA
 function atualiza() {
+    if (estado === 'vitoria') return
     if (!jogar) return
+
+        let ganho = 0.1
+
+if (fase === 2) ganho = 0.15
+if (fase === 3) ganho = 0.2
+
+if (baiacu1.vivo) baiacu1.pontos += ganho
+if (baiacu2.vivo) baiacu2.pontos += ganho
+
+
     if (bgX <= -1200) {
         bgX = 0
     }
 
+    if (fase < 3) {
     bgX -= tubarao.vel * 0.5
+} else {
+    bgX -= 4 // velocidade fixa na fase 3
+}
 
     vidaItem.mover()
 
@@ -406,9 +528,17 @@ if (tempoVida <= 0 && vidaItem.x < -100) {
      tempoVida = Math.random() * 1200 + 600 // 👈 AQUI
 }
 
+    if (fase < 3) {
     tubarao.mov_tubarao()
     tubarao2.mov_tubarao()
     tubarao3.mov_tubarao()
+}
+
+    if (fase === 3) {
+    megatubarao.forEach(m => {
+        m.mov_megatubarao()
+    })
+}
 
     // J1
     if (baiacu1.parryAtivo) {
@@ -432,40 +562,61 @@ if (tempoVida <= 0 && vidaItem.x < -100) {
     if (baiacu1.tempoInv <= 0) baiacu1.invulneravel = false
     if (baiacu2.tempoInv <= 0) baiacu2.invulneravel = false
 
-    colisao()
-    pontuacao()
+        colisao()
     ver_fase()
     game_over()
+    vitoria()
 }
 
-// 🔁 LOOP
+    //  LOOP
 function main() {
     des.clearRect(0, 0, 1200, 700)
 
     if (estado === 'menu') {
+    if (musicaMenu.paused) {
+        musicaMenu.play()
+    }
+    desenha_menu()
+}else if (estado === 'jogo') {
+    musicaMenu.pause()
+    musicaMenu.currentTime = 0
+
+    desenha()
+    atualiza()
+}
+    if (estado === 'menu') {
+        tocarMusica(musicaMenu)
         desenha_menu()
     }
     else if (estado === 'jogo') {
+        tocarMusica(musicaJogo)
+
         desenha()
         atualiza()
     }
     else if (estado === 'gameover') {
+        tocarMusica(musicaGameOver)
+
         desenha()
         desenha_gameover()
     }
-    else if (estado === 'criador') {
+    else if (estado === 'criador') { 
         desenha_criador()
     }
     else if (estado === 'controles') {
         desenha_controles()
-    }
+    }else if (estado === 'vitoria') {
+    tocarMusica(musicaVitoria)
+    
+    desenha_vitoria()
+}
 
     requestAnimationFrame(main)
 }
 
-// 🚀 AGUARDA TODAS AS IMAGENS CARREGAREM
+//  AGUARDA TODAS AS IMAGENS CARREGAREM
 
-let todasImagens = [bg, bg2, bg3, capa, baiacu1.img, baiacu2.img, tubarao.img, baiacu1.bolha,
+let todasImagens = [bg, bg2, bg3, capa, capaVitoria, vidaItem.img, baiacu1.img, baiacu2.img, tubarao.img, baiacu1.bolha,
     baiacu2.bolha, tubarao2.img, tubarao3.img]
 let carregadas = 0
 
