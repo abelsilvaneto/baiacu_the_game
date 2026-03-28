@@ -66,7 +66,7 @@ tomarDano() {
 class Tubarao extends Obj {
     constructor(x, y, w, h, src) {
         super(x, y, w, h, src)
-        this.vel = 3
+        this.vel = 10
     }
 
     mov_tubarao() {
@@ -90,5 +90,24 @@ class Text {
         ctx.fillStyle = cor
         ctx.font = font
         ctx.fillText(text, x, y)
+    }
+}
+
+class Vida extends Obj {
+    constructor(x, y, w, h, src) {
+        super(x, y, w, h, src)
+        this.vel = 3
+    }
+
+    mover() {
+        this.x -= this.vel
+    }
+
+    desenhar(ctx) {
+        ctx.drawImage(this.img, this.x, this.y, this.w, this.h)
+    }
+
+    saiuTela() {
+        return this.x < -100
     }
 }
