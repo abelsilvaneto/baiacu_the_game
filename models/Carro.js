@@ -89,13 +89,32 @@ class Megatubarao extends Tubarao {
 
         this.vel = 7
         this.angulo = 0
+
+        this.direcaoY = 1 // 1 = descendo, -1 = subindo
+        this.velY = 2
+
+        this.limiteCima = 100
+        this.limiteBaixo = 500
     }
+
     mov_megatubarao() {
+        // movimento horizontal
         this.x -= this.vel
 
-        this.angulo += 0.1
-        this.y += Math.sin(this.angulo) * 3
-        
+        // movimento vertical (vai e volta)
+        this.y += this.velY * this.direcaoY
+
+        if (this.y <= this.limiteCima) {
+            this.direcaoY = 1 // desce
+        }
+
+        if (this.y >= this.limiteBaixo) {
+            this.direcaoY = -1 // sobe
+        }
+
+        // rotação contínua anti-horário
+        this.angulo -= 0.05
+
         if (this.x <= -100) {
             this.recomeca()
         }

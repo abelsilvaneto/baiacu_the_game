@@ -1,7 +1,7 @@
 let des = document.getElementById('des').getContext('2d')
 
-let musicaJogo = new Audio('./img/game.mp3')
-let musicaVitoria = new Audio('./img/vitoria.mp3')
+let musicaJogo = new Audio('./img/games.wav')
+let musicaVitoria = new Audio('./img/ganhou.mp3')
 let musicaGameOver = new Audio('./img/perdeu.mp3')
 let musicaMenu = new Audio('./img/menu.mp3')
 
@@ -174,13 +174,14 @@ document.addEventListener('keyup', (e) => {
         : []
 
     // J1 pega vida
-if (baiacu1.colid(vidaItem)) {
+// J1 pega vida
+if (baiacu1.vivo && baiacu1.colid(vidaItem)) {
     if (baiacu1.vida < 5) baiacu1.vida++
     vidaItem.x = -200
 }
 
 // J2 pega vida
-if (baiacu2.colid(vidaItem)) {
+if (baiacu2.vivo && baiacu2.colid(vidaItem)) {
     if (baiacu2.vida < 5) baiacu2.vida++
     vidaItem.x = -200
 }
@@ -378,9 +379,21 @@ if (fase < 3) {
 
 
 if (fase === 3) {
-    megatubarao.forEach(m => {
-        des.drawImage(m.img, m.x, m.y, m.w, m.h)
-    })
+megatubarao.forEach(m => {
+
+    des.save()
+
+    // move o ponto de rotação pro centro do tubarão
+    des.translate(m.x + m.w / 2, m.y + m.h / 2)
+
+    // rotação (anti-horário)
+    des.rotate(m.angulo)
+
+    // desenha centralizado
+    des.drawImage(m.img, -m.w / 2, -m.h / 2, m.w, m.h)
+
+    des.restore()
+})
 }
 
     vidaItem.desenhar(des)
@@ -433,13 +446,12 @@ function desenha_vitoria() {
     des.fillStyle = 'yellow'
     des.font = 'bold 80px monospace'
     des.textAlign = 'center'
-    des.fillText('VITÓRIA!', 600, 250)
 
     let vencedor = baiacu1.pontos > baiacu2.pontos ? 'JOGADOR 1' : 'JOGADOR 2'
 
     des.fillStyle = 'white'
     des.font = '30px monospace'
-    des.fillText(`${vencedor} venceu!`, 600, 350)
+    des.fillText(`${vencedor} venceu!`, 600, 150)
 
     des.fillText(`J1: ${Math.floor(baiacu1.pontos)} pts`, 600, 420)
     des.fillText(`J2: ${Math.floor(baiacu2.pontos)} pts`, 600, 460)
@@ -471,6 +483,7 @@ function desenha_controles() {
     des.fillText('P1 W/S e P2 ↑/↓ para mover', 600, 300)
     des.fillText('P1 Shift = Parry', 600, 350)
     des.fillText('P2 Enter = Parry', 600, 400)
+    des.fillText('Para vencer chegue em 2000 vivo', 600, 450)
     des.fillText('ESC para voltar', 600, 500)
 }
 
