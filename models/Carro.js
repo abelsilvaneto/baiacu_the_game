@@ -14,7 +14,7 @@ class Obj {
         this.parryCooldown = 0
 
         this.bolha = new Image()
-this.bolha.src = './img/bolha.png' // coloca o caminho correto aqui
+        this.bolha.src = './img/bolha.png' // coloca o caminho correto aqui
     }
 }
 
