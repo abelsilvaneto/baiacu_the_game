@@ -93,8 +93,8 @@ class Megatubarao extends Tubarao {
         this.direcaoY = 1 // 1 = descendo, -1 = subindo
         this.velY = 2
 
-        this.limiteCima = 100
-        this.limiteBaixo = 500
+        this.limiteCima = 0
+        this.limiteBaixo = 600
     }
 
     mov_megatubarao() {

@@ -36,12 +36,15 @@ let mouseX = 0
 let mouseY = 0
 
 //  INIMIGOS
-let megatubarao = [
-    new Megatubarao(1400, 300, 80, 80, './img/mega_tubarao1.png'),
-    new Megatubarao(1400, 300, 80, 80, './img/mega_tubarao1.png'),
-    new Megatubarao(1400, 300, 80, 80, './img/mega_tubarao1.png')
+let megatubarao = []
+ 
+for(let i = 0; i < 4; i++) {
+    megatubarao.push(
+        new Megatubarao(1400 + i * 200,Math.random() * (650 - 62) + 62,80,80,'./img/mega_tubarao1.png')
+    )
+}
 
-]
+
 let tubarao = new Tubarao(1300, 325, 80, 50, './img/PC_Computer_1bg.png')
 let tubarao2 = new Tubarao(1500, 125, 80, 50, './img/PC_Computer_1bg.png')
 let tubarao3 = new Tubarao(1700, 400, 80, 50, './img/PC_Computer_1bg.png')
@@ -467,7 +470,7 @@ function desenha_criador() {
 
     des.fillStyle = 'white'
     des.textAlign = 'center'
-    des.fillText('Criado por: Abel Silva Neto na escola sesi senai ', 600, 300)
+    des.fillText('Criado por: Abel Silva Neto, GitHub: abelsilvaneto ', 600, 300)
     des.fillText('Email: abel_silva-neto@estudante.sesisenai.org.br ', 600, 350)
     des.fillText('Product Owner: carlos Roberto da silva filho', 600, 400)
     des.fillText('Telefone: (47) 99614-7194 ', 600, 450)
@@ -483,7 +486,7 @@ function desenha_controles() {
     des.fillText('P1 W/S e P2 ↑/↓ para mover', 600, 300)
     des.fillText('P1 Shift = Parry', 600, 350)
     des.fillText('P2 Enter = Parry', 600, 400)
-    des.fillText('Para vencer chegue em 2000 vivo', 600, 450)
+    des.fillText('Para vencer chegue em 1200 vivo', 600, 450)
     des.fillText('ESC para voltar', 600, 500)
 }
 
