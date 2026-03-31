@@ -38,7 +38,7 @@ let mouseY = 0
 //  INIMIGOS
 let megatubarao = []
  
-for(let i = 0; i < 5; i++) {
+for(let i = 0; i < 3; i++) {
     megatubarao.push(
         new Megatubarao(1400 + i * 200,Math.random() * (650 - 62) + 62,80,80,'./img/mega_tubarao1.png')
     )
@@ -46,7 +46,7 @@ for(let i = 0; i < 5; i++) {
 
 let tubarao = []
 
-for(let i = 0; i < 5; i++){
+for(let i = 0; i < 3; i++){
    tubarao.push(
     new Tubarao(1400 + i * 200,Math.random() * (650 - 62) + 62,80,80,'./img/PC_Computer_1bg.png')
    )
@@ -59,8 +59,8 @@ let tempoVida = 0
 
 
 //  JOGADORES (BAIACU)
-let baiacu1 = new Baiacu(100, 250, 80, 50, './img/baiacu_0_bg.png')
-let baiacu2 = new Baiacu(100, 420, 80, 50, './img/baiacu_1_bg.png')
+let baiacu1 = new Baiacu(100, 250, 100, 70, './img/baiacu_0_bg.png')
+let baiacu2 = new Baiacu(100, 420, 100, 70, './img/baiacu_1_bg.png')
 
 // HUD
 let t1 = new Text()
@@ -247,7 +247,7 @@ function ver_fase() {
 
     // aceleração infinita (só mega)
     if (fase === 3) {
-        megatubarao.forEach(m => m.vel += 0.001)
+        megatubarao.forEach(m => m.vel += 0.002)
     }
 }
 

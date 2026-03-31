@@ -66,7 +66,7 @@ tomarDano() {
 class Tubarao extends Obj {
     constructor(x, y, w, h, src) {
         super(x, y, w, h, src)
-        this.vel = 6
+        this.vel = 7
     }
 
     mov_tubarao() {
