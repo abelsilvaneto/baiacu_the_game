@@ -46,7 +46,6 @@ O jogo se passa no fundo do mar, onde baiacus enfrentam tubarões comuns e um me
 ### ⭐ Pontuação
 - Pontuação contínua estilo *Subway Surfers*
 - Aumenta com o tempo
-- Inimigos desviados também dão pontos
 
 ---
 
@@ -58,7 +57,7 @@ O jogo se passa no fundo do mar, onde baiacus enfrentam tubarões comuns e um me
 ---
 
 ### 🏆 Vitória
-- O jogo termina quando um jogador atinge **2000 pontos**
+- O jogo termina quando um jogador atinge **1200 pontos**
 - Uma tela de vitória é exibida
 
 ---

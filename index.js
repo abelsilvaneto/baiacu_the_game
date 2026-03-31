@@ -38,16 +38,20 @@ let mouseY = 0
 //  INIMIGOS
 let megatubarao = []
  
-for(let i = 0; i < 4; i++) {
+for(let i = 0; i < 5; i++) {
     megatubarao.push(
         new Megatubarao(1400 + i * 200,Math.random() * (650 - 62) + 62,80,80,'./img/mega_tubarao1.png')
     )
 }
 
+let tubarao = []
 
-let tubarao = new Tubarao(1300, 325, 80, 50, './img/PC_Computer_1bg.png')
-let tubarao2 = new Tubarao(1500, 125, 80, 50, './img/PC_Computer_1bg.png')
-let tubarao3 = new Tubarao(1700, 400, 80, 50, './img/PC_Computer_1bg.png')
+for(let i = 0; i < 5; i++){
+   tubarao.push(
+    new Tubarao(1400 + i * 200,Math.random() * (650 - 62) + 62,80,80,'./img/PC_Computer_1bg.png')
+   )
+}
+
 
 
 let vidaItem = new Vida(1400, 200, 50, 50, './img/coracao.png')
@@ -172,9 +176,7 @@ document.addEventListener('keyup', (e) => {
 //  COLISÃO
     function colisao() {
 
-    let inimigos = fase < 3 
-        ? [tubarao, tubarao2, tubarao3]
-        : []
+        let inimigos = fase < 3 ? tubarao : []
 
     // J1 pega vida
 // J1 pega vida
@@ -233,15 +235,19 @@ function ver_fase() {
 
     if (melhor > 300 && fase === 1) {
         fase = 2
-        tubarao.vel = tubarao2.vel = tubarao3.vel = 10
+        tubarao.forEach(t => t.vel += 3)
     }
     else if (melhor > 600 && fase === 2) {
         fase = 3
-        tubarao.vel = tubarao2.vel = tubarao3.vel = 14
+
+        // NÃO mexe mais nos tubarões aqui
+        // só prepara os megatubarões
+        megatubarao.forEach(m => m.vel = 7)
     }
-    //  NOVO: aceleração infinita na fase 3
+
+    // aceleração infinita (só mega)
     if (fase === 3) {
-        megatubarao.forEach(m => m.vel += 0.002)
+        megatubarao.forEach(m => m.vel += 0.001)
     }
 }
 
@@ -283,14 +289,10 @@ function resetarJogo() {
         m.y = Math.random() * (650 - 62) + 62
         m.vel = 7
     })
-    tubarao.recomeca()
-    tubarao2.recomeca()
-    tubarao3.recomeca()
-
-    tubarao.vel = 3
-    tubarao2.vel = 3
-    tubarao3.vel = 3
-
+    tubarao.forEach(t => {
+        t.recomeca()
+        t.vel = 6
+    })
     // fase
     fase = 1
 
@@ -375,9 +377,9 @@ function desenha() {
 
     // INIMIGOS
 if (fase < 3) {
-    des.drawImage(tubarao.img, tubarao.x, tubarao.y, tubarao.w, tubarao.h)
-    des.drawImage(tubarao2.img, tubarao2.x, tubarao2.y, tubarao2.w, tubarao2.h)
-    des.drawImage(tubarao3.img, tubarao3.x, tubarao3.y, tubarao3.w, tubarao3.h)
+    tubarao.forEach(t => {
+        des.drawImage(t.img, t.x, t.y, t.w, t.h)
+    })
 }
 
 
@@ -526,7 +528,7 @@ if (baiacu2.vivo) baiacu2.pontos += ganho
     }
 
     if (fase < 3) {
-    bgX -= tubarao.vel * 0.5
+        bgX -= tubarao[0].vel * 0.5
 } else {
     bgX -= 4 // velocidade fixa na fase 3
 }
@@ -545,9 +547,9 @@ if (tempoVida <= 0 && vidaItem.x < -100) {
 }
 
     if (fase < 3) {
-    tubarao.mov_tubarao()
-    tubarao2.mov_tubarao()
-    tubarao3.mov_tubarao()
+        tubarao.forEach(t => {
+            t.mov_tubarao()
+        })
 }
 
     if (fase === 3) {
@@ -632,8 +634,8 @@ function main() {
 
 //  AGUARDA TODAS AS IMAGENS CARREGAREM
 
-let todasImagens = [bg, bg2, bg3, capa, capaVitoria, vidaItem.img, baiacu1.img, baiacu2.img, tubarao.img, baiacu1.bolha,
-    baiacu2.bolha, tubarao2.img, tubarao3.img]
+let todasImagens = [bg, bg2, bg3, capa, capaVitoria, vidaItem.img, baiacu1.img, baiacu2.img, baiacu1.bolha,
+    baiacu2.bolha]
 let carregadas = 0
 
 todasImagens.forEach(img => {
