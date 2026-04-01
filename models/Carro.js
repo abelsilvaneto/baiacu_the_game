@@ -47,7 +47,7 @@ tomarDano() {
     if (!this.invulneravel) {
         this.vida--
         this.invulneravel = true
-        this.tempoInv = 120
+        this.tempoInv = 180
     }
 }
 
@@ -66,7 +66,7 @@ tomarDano() {
 class Tubarao extends Obj {
     constructor(x, y, w, h, src) {
         super(x, y, w, h, src)
-        this.vel = 7
+        this.vel = 8
     }
 
     mov_tubarao() {
