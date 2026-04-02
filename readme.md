@@ -8,6 +8,72 @@ Abel Silva Neto
 
 ---
 
+## 📐 Modelagem e Documentação do Sistema
+## 📊 Diagrama de Casos de Uso
+![Diagrama Caso de uso](./diagrama_uml/diagramaClasseBaiacuReal.png)
+
+## 🧱 Diagrama de Classes
+![Diagrama de classe](./diagrama_uml/diagrama_CasoDeUsoReal1.png)
+
+## 🔄 Diagrama de Sequência
+![Diagrama de Sequencia](./diagrama_uml/diagrama_sequencia_original.png)
+
+## ⚙️ Requisitos Não Funcionais (RNF)
+RNF01 (Tecnologia)
+O sistema foi desenvolvido em JavaScript, compatível com navegadores modernos sem necessidade de transpilação.
+
+RNF02 (Portabilidade)
+O jogo roda diretamente no navegador utilizando HTML5 Canvas.
+
+RNF03 (Usabilidade)
+A interface foi projetada para uso em computadores, com layout adaptado para resolução 1200x700 (canvas do jogo).
+
+RNF04 (Desempenho)
+O jogo utiliza requestAnimationFrame, garantindo fluidez e taxa de quadros estável (~60 FPS).
+
+## 📏 Regras de Negócio (RN)
+RN01 (Dificuldade Progressiva)
+A velocidade dos inimigos aumenta conforme a progressão das fases.
+
+RN02 (Troca de Cenário)
+Cada fase possui um fundo diferente, indicando evolução no jogo.
+
+RN03 (Vitória)
+O jogador vence ao atingir 1200 pontos com pelo menos 1 vida restante.
+
+RN04 (Manual de Instruções)
+O jogo possui uma tela de controles explicando comandos e mecânicas.
+
+## 🧩 Requisitos Funcionais (RF)
+
+RF01 - Movimentação
+O jogador pode se mover verticalmente (eixo Y).
+
+RF02 - Sistema de Vidas
+O jogador inicia com 5 vidas e perde ao colidir com inimigos.
+
+RF03 - Pontuação
+O jogo possui sistema de pontuação contínua.
+
+RF04 - Coletáveis
+Itens de vida aparecem e podem ser coletados.
+
+RF05 - Progressão de Fases
+O jogo possui 3 fases com aumento de dificuldade.
+
+RF06 - Interface (Telas)
+O sistema possui:
+
+Menu inicial
+Tela de jogo
+Tela “Sobre”
+Tela de controles
+Tela de vitória
+Tela de derrota
+
+RF07 - Tela "Sobre"
+Exibe informações do desenvolvedor e Product Owner.
+
 ## 🎮 Visão Geral do Sistema
 
 ### 📌 Descrição
