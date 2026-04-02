@@ -16,7 +16,7 @@ Abel Silva Neto
 ![Diagrama de classe](./diagrama_uml/diagrama_CasoDeUsoReal1.png)
 
 ## 🔄 Diagrama de Sequência
-![Diagrama de Sequencia](./diagrama_uml/diagrama_sequencia_original.png)
+![Diagrama de Sequencia](./diagrama_uml/diagram_sequencia_original.png)
 
 ## ⚙️ Requisitos Não Funcionais (RNF)
 RNF01 (Tecnologia)
