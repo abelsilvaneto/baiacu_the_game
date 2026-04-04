@@ -7,14 +7,22 @@ let musicaVitoria = new Audio('./img/ganhou.mp3')
 let musicaGameOver = new Audio('./img/perdeu.mp3')
 let musicaMenu = new Audio('./img/menu.mp3')
 
+let somDano = new Audio('./img/hit.wav')
+let somParry = new Audio('./img/escudo.wav')
+let somVida = new Audio('./img/baiacu_comendo.mp3')
+
 // define loop e volume
 musicaJogo.loop = true
 musicaMenu.loop = true
 
+// volume de 0 a 1
 musicaMenu.volume = 0.5
 musicaJogo.volume = 0.5
 musicaVitoria.volume = 0.7
 musicaGameOver.volume = 0.7
+somDano.volume = 0.6
+somParry.volume = 0.6
+somVida.volume = 0.6
 
 // imagens de fundo para cada fase
 let bg = new Image()
@@ -29,7 +37,6 @@ bg3.src = './img/fundo3.png'
 // posição horizontal do fundo (efeito de movimento)
 let bgX = 0
 
-
 //  CAPA
 let capa = new Image()
 capa.src = './img/capa.png'
@@ -43,7 +50,6 @@ let mouseY = 0
 // lista de mega tubarões (fase 3)
 let megatubarao = []
 
-// lista de mega tubarões (fase 3)
 for (let i = 0; i < 4; i++) {
     megatubarao.push(
         new Megatubarao(1400 + i * 200, Math.random() * (650 - 62) + 62, 80, 80, './img/mega_tubarao1.png')
@@ -58,22 +64,21 @@ for (let i = 0; i < 4; i++) {
     )
 }
 
-
-
 let vidaItem = new Vida(1400, 200, 50, 50, './img/coracao.png')
 let tempoVida = 0
-
 
 // jogadores (baiacus)
 let baiacu1 = new Baiacu(100, 250, 100, 70, './img/baiacu_0_bg.png')
 let baiacu2 = new Baiacu(100, 420, 100, 70, './img/baiacu_1_bg.png')
+
+let jogadores = [baiacu1, baiacu2]
 
 // HUD
 let t1 = new Text()
 let t2 = new Text()
 let fase_txt = new Text()
 
-
+// controla a fase atual, se o jogo está rodando, e o estado (menu, jogo, gameover, etc)
 let fase = 1
 let jogar = true
 let estado = 'menu'
@@ -83,6 +88,7 @@ let botoes = [
     { texto: 'CONTROLES', x: 450, y: 460, w: 300, h: 60 }
 ]
 
+// pega posição do mouse para os botões do menu
 document.addEventListener('mousemove', (e) => {
     let rect = des.canvas.getBoundingClientRect()
     mouseX = e.clientX - rect.left
@@ -173,44 +179,39 @@ function colisao() {
     let inimigos = fase < 3 ? tubarao : []
 
     // J1 pega vida
-    if (baiacu1.vivo && baiacu1.colid(vidaItem)) {
-        if (baiacu1.vida < 5) baiacu1.vida++
+    jogadores.forEach(j => {
+    if (j.vivo && j.colid(vidaItem) && vidaItem.x > 0) {
+        if (j.vida < 5) {
+            j.vida++
+            somVida.currentTime = 0
+            somVida.play()
+        }
         vidaItem.x = -200
     }
+})
 
-    // J2 pega vida
-    if (baiacu2.vivo && baiacu2.colid(vidaItem)) {
-        if (baiacu2.vida < 5) baiacu2.vida++
-        vidaItem.x = -200
-    }
 
     if (fase === 3) {
         megatubarao.forEach(m => {
 
-            if (baiacu1.vivo && baiacu1.colid(m)) {
-                m.recomeca()
-                baiacu1.tomarDano()
-            }
-
-            if (baiacu2.vivo && baiacu2.colid(m)) {
-                m.recomeca()
-                baiacu2.tomarDano()
-            }
+jogadores.forEach(j => {
+    if (j.vivo && j.colid(m)) {
+        m.recomeca()
+        j.tomarDano()
+    }
+})
 
         })
     }
 
-    inimigos.forEach(inimigo => {
-        if (baiacu1.vivo && baiacu1.colid(inimigo)) {
+inimigos.forEach(inimigo => {
+    jogadores.forEach(j => {
+        if (j.vivo && j.colid(inimigo)) {
             inimigo.recomeca()
-            baiacu1.tomarDano()
-        }
-
-        if (baiacu2.vivo && baiacu2.colid(inimigo)) {
-            inimigo.recomeca()
-            baiacu2.tomarDano()
+            j.tomarDano()
         }
     })
+})
 }
 
 function clicarBotao(texto) {
@@ -229,19 +230,22 @@ function ver_fase() {
     //Vai pra fase 2
     if (melhor > 300 && fase === 1) {
         fase = 2
-        tubarao.forEach(t => t.vel += 3)
+        tubarao.forEach(t => t.vel += 6)
     }
     // vai pra fase 3
     else if (melhor > 600 && fase === 2) {
         fase = 3
         // só prepara os megatubarões
-        megatubarao.forEach(m => m.vel = 7)
+        megatubarao.forEach(m => m.vel = 12)
+    }
+    if (fase === 3) {
+        megatubarao.forEach(m => {
+            m.vel += 0.001
+        })
     }
 
     // aceleração infinita (só mega)
-    if (fase === 3) {
-        megatubarao.forEach(m => m.vel += 0.002)
-    }
+
 }
 
 //  GAME OVER
@@ -508,10 +512,10 @@ function atualiza() {
     if (!jogar) return
 
     // ganho de pontos por frame
-    let ganho = 0.1
+    let ganho = 0.08
 
-    if (fase === 2) ganho = 0.15
-    if (fase === 3) ganho = 0.2
+    if (fase === 2) ganho = 0.10
+    if (fase === 3) ganho = 0.12
 
     // movimenta fundo (efeito infinito)
     if (baiacu1.vivo) baiacu1.pontos += ganho
@@ -526,7 +530,7 @@ function atualiza() {
     if (fase < 3) {
         bgX -= tubarao[0].vel * 0.5
     } else {
-        bgX -= 4 // velocidade fixa na fase 3
+        bgX -= megatubarao[0].vel * 0.5 // velocidade fixa na fase 3
     }
 
     vidaItem.mover()
@@ -588,9 +592,8 @@ function atualiza() {
 function main() {
     des.clearRect(0, 0, 1200, 700)
 
-
-     // muda comportamento dependendo do estado do jogo
-     switch (estado) {
+    // muda comportamento dependendo do estado do jogo
+    switch (estado) {
 
         case 'menu':
             tocarMusica(musicaMenu)

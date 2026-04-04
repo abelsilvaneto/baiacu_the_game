@@ -6,7 +6,7 @@ class Obj {
         this.h = h
 
         this.img = new Image()
-        this.img.onload = () => {} // reserva o slot antes
+        this.img.onload = () => { } // reserva o slot antes
         this.img.src = src         // src DEPOIS do onload
 
         this.parryAtivo = false
@@ -32,24 +32,30 @@ class Baiacu extends Obj {
         this.tempoInv = 0
     }
 
-ativarParry() {
-    if (this.parryCooldown <= 0 && !this.parryAtivo) {
-        this.parryAtivo = true
-        this.parryTempo = 60      // 1 segundo (60fps)
-        this.parryCooldown = 900  // 15 segundos (60 * 15)
+    ativarParry() {
+        if (this.parryCooldown <= 0 && !this.parryAtivo) {
+            this.parryAtivo = true
+            this.parryTempo = 30      // 1 segundo (60fps)
+            this.parryCooldown = 300  // 15 segundos (60 * 15)
+            // 🔊 SOM SÓ QUANDO ATIVA
+            somParry.currentTime = 0
+            somParry.play()
+        }
     }
-}
 
 
-tomarDano() {
-    if (this.parryAtivo) return // 🛡️ parry ativo = imortal
+    tomarDano() {
+        if (this.parryAtivo) return // 🛡️ parry ativo = imortal
 
-    if (!this.invulneravel) {
-        this.vida--
-        this.invulneravel = true
-        this.tempoInv = 180
+        if (!this.invulneravel) {
+            this.vida--
+            this.invulneravel = true
+            this.tempoInv = 180
+
+            somDano.currentTime = 0
+            somDano.play()
+        }
     }
-}
 
     colid(obj) {
         return (
@@ -113,7 +119,7 @@ class Megatubarao extends Tubarao {
         }
 
         // rotação contínua anti-horário
-        this.angulo -= 0.05
+        this.angulo -= this.vel * 0.01
 
         if (this.x <= -100) {
             this.recomeca()
