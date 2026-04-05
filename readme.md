@@ -74,37 +74,6 @@ Tela de derrota
 RF07 - Tela "Sobre"
 Exibe informações do desenvolvedor e Product Owner.
 
-## 📁 Estrutura do Projeto
-
-```bash
-(📁 projeto-baiacu/
-│
-├── 📄 index.html        # Página principal (canvas do jogo)
-├── 📄 index.js          # Lógica do jogo
-├── 📄 style.css         # Estilo da página
-│
-├── 📁 models/
-│   └── 📄 Carro.js      # Classes do jogo (objetos, inimigos, etc)
-│
-├── 📁 img/
-│   ├── 🖼️ fundo.png
-│   ├── 🖼️ fundo2.png
-│   ├── 🖼️ fundo3.png
-│   ├── 🖼️ capa.png
-│   ├── 🖼️ vitoria.png
-│   ├── 🖼️ baiacu_0_bg.png
-│   ├── 🖼️ baiacu_1_bg.png
-│   ├── 🖼️ mega_tubarao1.png
-│   ├── 🖼️ coracao.png
-│   └── ...
-│
-├── 📁 diagrams_uml/
-│   ├── 📄 caso_de_uso.uml
-│   ├── 📄 classe.uml
-│   └── 📄 sequencia.uml
-│
-└── 📄 README.md)
-
 ## 🎮 Visão Geral do Sistema
 
 ### 📌 Descrição
@@ -190,3 +159,34 @@ https://baiacu-the-game.vercel.app/
 git clone https://github.com/seu-usuario/seu-repositorio.git
 
 index.html
+
+## 📁 Estrutura do Projeto
+
+```bash
+(📁 projeto-baiacu/
+│
+├── 📄 index.html        # Página principal (canvas do jogo)
+├── 📄 index.js          # Lógica do jogo
+├── 📄 style.css         # Estilo da página
+│
+├── 📁 models/
+│   └── 📄 Carro.js      # Classes do jogo (objetos, inimigos, etc)
+│
+├── 📁 img/
+│   ├── 🖼️ fundo.png
+│   ├── 🖼️ fundo2.png
+│   ├── 🖼️ fundo3.png
+│   ├── 🖼️ capa.png
+│   ├── 🖼️ vitoria.png
+│   ├── 🖼️ baiacu_0_bg.png
+│   ├── 🖼️ baiacu_1_bg.png
+│   ├── 🖼️ mega_tubarao1.png
+│   ├── 🖼️ coracao.png
+│   └── ...
+│
+├── 📁 diagrams_uml/
+│   ├── 📄 caso_de_uso.uml
+│   ├── 📄 classe.uml
+│   └── 📄 sequencia.uml
+│
+└── 📄 README.md)
