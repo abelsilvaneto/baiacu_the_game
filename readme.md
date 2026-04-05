@@ -143,30 +143,9 @@ O jogo se passa no fundo do mar, onde baiacus enfrentam tubarões comuns e um me
 
 ---
 
-## 👨‍🏫 Créditos
+  ## 📁 Estrutura do Projeto
 
-- Desenvolvedor: Abel Silva Neto  
-- Product Owner: Carlos Roberto da Silva Filho  
-
----
-
-## 🌐 Link do Jogo
-
-https://baiacu-the-game.vercel.app/
-
-## 💻 Como Executar o Projeto
-
-### 1. Clonar o repositório
-```bash
-git clone https://github.com/seu-usuario/seu-repositorio.git
-
-index.html
-
----
-
-## 📁 Estrutura do Projeto
-
-```bash
+```
 📁 projeto-baiacu/
 │
 ├── index.html        # Página principal (canvas do jogo)
@@ -190,3 +169,29 @@ index.html
 │   └── sequencia.uml
 │
 └── README.md
+```
+
+---
+
+## 👨‍🏫 Créditos
+
+- Desenvolvedor: Abel Silva Neto  
+- Product Owner: Carlos Roberto da Silva Filho  
+
+---
+
+## 🌐 Link do Jogo
+
+https://baiacu-the-game.vercel.app/
+
+## 💻 Como Executar o Projeto
+
+### 1. Clonar o repositório
+```bash
+git clone https://github.com/seu-usuario/seu-repositorio.git
+
+index.html
+
+---
+
+
