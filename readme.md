@@ -18,6 +18,35 @@ Abel Silva Neto
 ## 🔄 Diagrama de Sequência
 ![Diagrama de Sequencia](./diagrama_uml/diagram_sequencia_original.png)
 
+---
+
+## 📁 Estrutura do Projeto
+
+
+📁 projeto-baiacu/
+│
+├── index.html
+├── index.js
+├── style.css
+│
+├── 📁 models/
+│   └── Carro.js
+│
+├── 📁 img/
+│   ├── fundo.png
+│   ├── fundo2.png
+│   ├── fundo3.png
+│   ├── capa.png
+│   ├── vitoria.png
+│   └── ...
+│
+├── 📁 diagrams_uml/
+│   ├── caso_de_uso.uml
+│   ├── classe.uml
+│   └── sequencia.uml
+│
+└── README.md
+
 ## ⚙️ Requisitos Não Funcionais (RNF)
 RNF01 (Tecnologia)
 O sistema foi desenvolvido em JavaScript, compatível com navegadores modernos sem necessidade de transpilação.
@@ -159,6 +188,8 @@ https://baiacu-the-game.vercel.app/
 git clone https://github.com/seu-usuario/seu-repositorio.git
 
 index.html
+
+---
 
 ## 📁 Estrutura do Projeto
 
