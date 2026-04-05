@@ -18,34 +18,7 @@ Abel Silva Neto
 ## 🔄 Diagrama de Sequência
 ![Diagrama de Sequencia](./diagrama_uml/diagram_sequencia_original.png)
 
----
 
-## 📁 Estrutura do Projeto
-
-
-📁 projeto-baiacu/
-│
-├── index.html
-├── index.js
-├── style.css
-│
-├── 📁 models/
-│   └── Carro.js
-│
-├── 📁 img/
-│   ├── fundo.png
-│   ├── fundo2.png
-│   ├── fundo3.png
-│   ├── capa.png
-│   ├── vitoria.png
-│   └── ...
-│
-├── 📁 diagrams_uml/
-│   ├── caso_de_uso.uml
-│   ├── classe.uml
-│   └── sequencia.uml
-│
-└── README.md
 
 ## ⚙️ Requisitos Não Funcionais (RNF)
 RNF01 (Tecnologia)
@@ -194,30 +167,26 @@ index.html
 ## 📁 Estrutura do Projeto
 
 ```bash
-(📁 projeto-baiacu/
+📁 projeto-baiacu/
 │
-├── 📄 index.html        # Página principal (canvas do jogo)
-├── 📄 index.js          # Lógica do jogo
-├── 📄 style.css         # Estilo da página
+├── index.html        # Página principal (canvas do jogo)
+├── index.js          # Lógica do jogo
+├── style.css         # Estilo da página
 │
 ├── 📁 models/
-│   └── 📄 Carro.js      # Classes do jogo (objetos, inimigos, etc)
+│   └── Carro.js      # Classes do jogo
 │
 ├── 📁 img/
-│   ├── 🖼️ fundo.png
-│   ├── 🖼️ fundo2.png
-│   ├── 🖼️ fundo3.png
-│   ├── 🖼️ capa.png
-│   ├── 🖼️ vitoria.png
-│   ├── 🖼️ baiacu_0_bg.png
-│   ├── 🖼️ baiacu_1_bg.png
-│   ├── 🖼️ mega_tubarao1.png
-│   ├── 🖼️ coracao.png
+│   ├── fundo.png
+│   ├── fundo2.png
+│   ├── fundo3.png
+│   ├── capa.png
+│   ├── vitoria.png
 │   └── ...
 │
 ├── 📁 diagrams_uml/
-│   ├── 📄 caso_de_uso.uml
-│   ├── 📄 classe.uml
-│   └── 📄 sequencia.uml
+│   ├── caso_de_uso.uml
+│   ├── classe.uml
+│   └── sequencia.uml
 │
-└── 📄 README.md)
+└── README.md
